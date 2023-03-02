@@ -25,3 +25,4 @@ output "elastic_ip" {
     value = aws_eip.demo_eip.public_ip
 }
 
+#TO:DO Sanji pull jenkins password upon install and send it ot stdout in TF.
