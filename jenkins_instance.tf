@@ -3,7 +3,7 @@ resource "aws_instance" "demo-jenkins" {
   instance_type = "t2.micro"
   key_name      = "mykeypair"
 
-  user_data = ${file("userdata.sh")}
+  user_data = "${file("userdata.sh")}"
 
 
   tags = {
