@@ -17,8 +17,4 @@ resource "aws_autoscaling_group" "demo_asg_2" {
     version = "$Latest"
   }
 
-  tags {
-    terraform = "true"
-  }
-
 }
