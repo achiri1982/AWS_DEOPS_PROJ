@@ -2,6 +2,7 @@ resource "aws_instance" "demo-jenkins" {
   ami           = "ami-0be8362a1f51bfe28"
   instance_type = "t2.micro"
   key_name      = "mykeypair"
+  subnet_id     = "${aws_subnet.subnetB_2.id}"
   vpc_security_group_ids = [aws_security_group.demo_sg_1_2.id]
   user_data = "${file("userdata.sh")}"
 
