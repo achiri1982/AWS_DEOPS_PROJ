@@ -21,7 +21,7 @@ resource "aws_eip_association" "demo_eip_ip_ass" {
     allocation_id = aws_eip.demo_eip.id
 }
 
-output "Elastic IP" {
+output "elastic_ip" {
     value = aws_eip.demo_eip.public_ip
 }
 
