@@ -96,6 +96,14 @@ resource "aws_security_group" "demo_sg_1_2" {
   }
 
   ingress {
+    description = "HTTP traffic"
+    from_port   = 0
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     description = "SSH traffic"
     from_port   = 0
     to_port     = 22
