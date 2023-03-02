@@ -28,7 +28,6 @@
     stages {
         stage('Init') {
             steps {
-                sh 'terraform --version'
                 terraformInit()
             }
         }
