@@ -27,3 +27,4 @@ output "elastic_ip" {
 }
 
 #TO:DO Sanji pull jenkins password upon install and send it ot stdout in TF.
+#Ensure you assign

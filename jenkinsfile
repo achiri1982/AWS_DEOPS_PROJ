@@ -28,6 +28,7 @@
     stages {
         stage('Init') {
             steps {
+                sh 'terraform --version'
                 terraformInit()
             }
         }
@@ -62,7 +63,7 @@
 
 def terraformInit() {
     sh("""
-#        cd Terraform/Demo;
+//        cd Terraform/Demo;
         terraform init -backend-config="bucket=${env.BACKEND_BUCKET}" -backend-config="key=terraform.tfstate"
         terraform workspace select ${params.Colour.toLowerCase()} || terraform workspace new ${params.Colour.toLowerCase()}
     """)
@@ -77,14 +78,14 @@ def terraformPlan() {
     }
 
     sh("""
-#        cd Terraform/Demo;
+//        cd Terraform/Demo;
         terraform plan ${env.DESTROY} -var-file=${params.Colour.toLowerCase()}.tfvars -no-color -out=tfout
     """)
 }
 
 def terraformApply() {
     sh("""
-#        cd Terraform/Demo;
+//        cd Terraform/Demo;
         terraform apply tfout -no-color
         mkdir ../../Inspec/files/
         terraform output --json > ../../Inspec/files/output.json
