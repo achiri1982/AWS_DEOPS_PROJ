@@ -1,14 +1,14 @@
- pipeline {
+pipeline {
     agent any
 
     environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        AWS_DEFAULT_REGION    = "us-east-1"
-        BACKEND_BUCKET        = "demomy-s3-bucket"
+        AWS_DEFAULT_REGION    = 'us-east-1'
+        BACKEND_BUCKET        = 'demomy-s3-bucket'
         TF_HOME               = tool('terraform')
-        TF_IN_AUTOMATION      = "TRUE"
-        TF_LOG                = "WARN"
+        TF_IN_AUTOMATION      = 'TRUE'
+        TF_LOG                = 'WARN'
         PATH                  = "$TF_HOME:$PATH"
     }
 
@@ -63,7 +63,7 @@
 
 def terraformInit() {
     sh("""
-//        cd Terraform/Demo;
+        //        cd Terraform/Demo;
         terraform init -backend-config="bucket=${env.BACKEND_BUCKET}" -backend-config="key=terraform.tfstate"
         terraform workspace select ${params.Colour.toLowerCase()} || terraform workspace new ${params.Colour.toLowerCase()}
     """)
@@ -71,25 +71,25 @@ def terraformInit() {
 
 def terraformPlan() {
     // Setting Terraform Destroy flag
-    if(params.Action == 'Destroy') {
+    if (params.Action == 'Destroy') {
         env.DESTROY = '-destroy'
     } else {
-        env.DESTROY = ""
+        env.DESTROY = ''
     }
 
     sh("""
-//        cd Terraform/Demo;
+        //        cd Terraform/Demo;
         terraform plan ${env.DESTROY} -var-file=${params.Colour.toLowerCase()}.tfvars -no-color -out=tfout
     """)
 }
 
 def terraformApply() {
-    sh("""
-//        cd Terraform/Demo;
+    sh('''
+        //        cd Terraform/Demo;
         terraform apply tfout -no-color
         mkdir ../../Inspec/files/
         terraform output --json > ../../Inspec/files/output.json
-    """)
+    ''')
 }
 
 def inspecValidation() {
