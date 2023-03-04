@@ -9,12 +9,11 @@ pipeline {
         BACKEND_BUCKET        = 'demomy-s3-bucket'
         TF_HOME               = tool('terraform')
         TF_IN_AUTOMATION      = 'TRUE'
-        TF_LOG                = 'INFO'
+        TF_LOG                = 'LOG'
         PATH                  = "$TF_HOME:$PATH"
     }
 
     parameters {
-        string(name: 'version', defaultValue: '', description: 'Version variable to pass to Terraform')
         choice(
             name: 'Action',
             choices: ['Build', 'Destroy'],
@@ -28,19 +27,29 @@ pipeline {
     }
 
     stages {
-        stage('terraform format check') {
-            steps{
-                sh 'terraform fmt'
+        stage('Init') {
+            steps {
+                terraformInit()
             }
         }
-        stage('terraform Init') {
-            steps{
-                sh 'terraform init'
+        stage('Plan') {
+            steps {
+                terraformPlan()
             }
         }
-        stage('terraform apply') {
-            steps{
-                sh 'terraform apply --auto-approve'
+        stage('Approval') {
+            steps {
+                input(message: 'Apply Terraform ?')
+            }
+        }
+        stage('Apply') {
+            steps {
+                terraformApply()
+            }
+        }
+        stage('Validate') {
+            steps {
+                inspecValidation()
             }
         }
     }
@@ -50,6 +59,14 @@ pipeline {
             deleteDir()
         }
     }
+}
+
+def terraformInit() {
+    sh("""
+
+        terraform init -backend-config="bucket=${env.BACKEND_BUCKET}" -backend-config="key=terraform.tfstate"
+//        terraform workspace select ${params.Colour.toLowerCase()} || terraform workspace new ${params.Colour.toLowerCase()}
+    """)
 }
 
 def terraformPlan() {
@@ -75,3 +92,8 @@ def terraformApply() {
     ''')
 }
 
+def inspecValidation() {
+    sh("""
+        inspec exec Inspec/ -t aws:// --input workspace=${params.Colour}
+    """)
+}
