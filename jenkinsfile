@@ -62,7 +62,6 @@ pipeline {
 
 def terraformInit() {
     sh("""
-        cd Terraform/Demo;
         terraform init -backend-config="bucket=${env.BACKEND_BUCKET}" -backend-config="key=terraform.tfstate"
         terraform workspace select ${params.Environment.toLowerCase()} || terraform workspace new ${params.Environment.toLowerCase()}
     """)
@@ -70,10 +69,10 @@ def terraformInit() {
 
 def terraformPlan() {
     // Setting Terraform Destroy flag
-    if(params.Action == 'Destroy') {
+    if (params.Action == 'Destroy') {
         env.DESTROY = '-destroy'
     } else {
-        env.DESTROY = ""
+        env.DESTROY = ''
     }
 
     sh("""
@@ -82,11 +81,11 @@ def terraformPlan() {
 }
 
 def terraformApply() {
-    sh("""
+    sh('''
         terraform apply tfout -no-color
         mkdir ../../Inspec/files/
         terraform output --json > ../../Inspec/files/output.json
-    """)
+    ''')
 }
 
 def inspecValidation() {
