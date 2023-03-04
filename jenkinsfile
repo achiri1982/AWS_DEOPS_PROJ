@@ -23,7 +23,7 @@ pipeline {
 //            name: 'Colour',
 //            choices: ['Blue', 'Green'],
 //            description: 'The environment to use'
-        )
+//        )
     }
 
     stages {
