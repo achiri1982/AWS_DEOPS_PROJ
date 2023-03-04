@@ -1,4 +1,3 @@
-/* groovylint-disable MethodReturnTypeRequired, NoDef */
 pipeline {
     agent any
 
@@ -11,6 +10,19 @@ pipeline {
         TF_IN_AUTOMATION      = 'TRUE'
         TF_LOG                = 'DEBUG'
         PATH                  = "$TF_HOME:$PATH"
+    }
+
+    parameters {
+        choice(
+            name: 'Action',
+            choices: ['Build', 'Destroy'],
+            description: 'The action to take'
+        )
+        choice(
+            name: 'Environment',
+            choices: ['Dev', 'Prod'],
+            description: 'The environment to use'
+        )
     }
 
     stages {
@@ -50,37 +62,35 @@ pipeline {
 
 def terraformInit() {
     sh("""
-
+        cd Terraform/Demo;
         terraform init -backend-config="bucket=${env.BACKEND_BUCKET}" -backend-config="key=terraform.tfstate"
-//        terraform workspace select ${params.Colour.toLowerCase()} || terraform workspace new ${params.Colour.toLowerCase()}
+        terraform workspace select ${params.Environment.toLowerCase()} || terraform workspace new ${params.Environment.toLowerCase()}
     """)
 }
 
 def terraformPlan() {
     // Setting Terraform Destroy flag
-    if (params.Action == 'Destroy') {
+    if(params.Action == 'Destroy') {
         env.DESTROY = '-destroy'
     } else {
-        env.DESTROY = ''
+        env.DESTROY = ""
     }
 
     sh("""
-
-        terraform plan ${env.DESTROY} -var-file=${params.Colour.toLowerCase()}.tfvars -no-color -out=tfout
+        terraform plan ${env.DESTROY} -var-file=${params.Environment.toLowerCase()}.tfvars -no-color -out=tfout
     """)
 }
 
 def terraformApply() {
-    sh('''
-
+    sh("""
         terraform apply tfout -no-color
         mkdir ../../Inspec/files/
         terraform output --json > ../../Inspec/files/output.json
-    ''')
+    """)
 }
 
-//def inspecValidation() {
-//    sh("""
-//        inspec exec Inspec/ -t aws:// --input workspace=${params.Colour}
-//    """)
-//}
+def inspecValidation() {
+    sh("""
+        inspec exec Inspec/ -t aws:// --input workspace=${params.Environment}
+    """)
+}
