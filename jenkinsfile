@@ -8,7 +8,7 @@ pipeline {
         BACKEND_BUCKET        = 'demomy-s3-bucket'
         TF_HOME               = tool('terraform')
         TF_IN_AUTOMATION      = 'TRUE'
-        TF_LOG                = 'DEBUG'
+        TF_LOG                = 'INFO'
         PATH                  = "$TF_HOME:$PATH"
     }
 
@@ -38,7 +38,7 @@ pipeline {
         }
         stage('Approval') {
             steps {
-                input(message: 'Apply Terraform ?')
+                input(message: 'Apply Terraform Changes?')
             }
         }
         stage('Apply') {
