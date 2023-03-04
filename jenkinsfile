@@ -13,19 +13,6 @@ pipeline {
         PATH                  = "$TF_HOME:$PATH"
     }
 
-    parameters {
-        choice(
-            name: 'Action',
-            choices: ['Build', 'Destroy'],
-            description: 'The action to take'
-        )
-//        choice(
-//            name: 'Colour',
-//            choices: ['Blue', 'Green'],
-//            description: 'The environment to use'
-//        )
-    }
-
     stages {
         stage('Init') {
             steps {
