@@ -27,7 +27,7 @@ pipeline {
         )
     }
 
-stages {
+    stages {
         stage('terraform format check') {
             steps{
                 sh 'terraform fmt'
