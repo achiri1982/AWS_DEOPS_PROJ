@@ -29,7 +29,7 @@ pipeline {
     stages {
         stage('Init') {
             steps {
-                terraformInit()
+                sh 'terraform init -input=false'
             }
         }
         stage('Plan') {
@@ -59,14 +59,6 @@ pipeline {
             deleteDir()
         }
     }
-}
-
-def terraformInit() {
-    sh("""
-
-        terraform init -backend-config="bucket=${env.BACKEND_BUCKET}" -backend-config="key=terraform.tfstate"
-//        terraform workspace select ${params.Colour.toLowerCase()} || terraform workspace new ${params.Colour.toLowerCase()}
-    """)
 }
 
 def terraformPlan() {
