@@ -27,33 +27,20 @@ pipeline {
         )
     }
 
-    stages {
-        stage('Init') {
-            steps {
-                script {
-                    currentBuild.displayName = params.version
-                }
-                sh 'terraform init -input=false'
+stages {
+        stage('terraform format check') {
+            steps{
+                sh 'terraform fmt'
             }
         }
-        stage('Plan') {
-            steps {
-                terraformPlan()
+        stage('terraform Init') {
+            steps{
+                sh 'terraform init'
             }
         }
-        stage('Approval') {
-            steps {
-                input(message: 'Apply Terraform ?')
-            }
-        }
-        stage('Apply') {
-            steps {
-                terraformApply()
-            }
-        }
-        stage('Validate') {
-            steps {
-                inspecValidation()
+        stage('terraform apply') {
+            steps{
+                sh 'terraform apply --auto-approve'
             }
         }
     }
