@@ -29,7 +29,6 @@ pipeline {
     stages {
         stage('Init') {
             steps {
-                'terraform --version'
                 terraformInit()
             }
         }
