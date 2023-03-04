@@ -29,7 +29,7 @@ pipeline {
     stages {
         stage('Init') {
             steps {
-                terraform init -input=false
+                sh 'terraform init'
             }
         }
         stage('Plan') {
