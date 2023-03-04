@@ -88,8 +88,3 @@ def terraformApply() {
     ''')
 }
 
-def inspecValidation() {
-    sh("""
-        inspec exec Inspec/ -t aws:// --input workspace=${params.Colour}
-    """)
-}
