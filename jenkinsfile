@@ -14,6 +14,7 @@ pipeline {
     }
 
     parameters {
+        string(name: 'version', defaultValue: '', description: 'Version variable to pass to Terraform')
         choice(
             name: 'Action',
             choices: ['Build', 'Destroy'],
@@ -27,9 +28,12 @@ pipeline {
     }
 
     stages {
-        stage('Init') {
+        stage('Plan') {
             steps {
-                sh 'terraform init'
+                script {
+                    currentBuild.displayName = params.version
+                }
+                sh 'terraform init -input=false'
             }
         }
         stage('Plan') {
