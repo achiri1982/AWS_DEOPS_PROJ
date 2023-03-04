@@ -9,7 +9,7 @@ pipeline {
         BACKEND_BUCKET        = 'demomy-s3-bucket'
         TF_HOME               = tool('terraform')
         TF_IN_AUTOMATION      = 'TRUE'
-        TF_LOG                = 'LOG'
+        TF_LOG                = 'INFO'
         PATH                  = "$TF_HOME:$PATH"
     }
 
