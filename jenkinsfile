@@ -19,10 +19,10 @@ pipeline {
             choices: ['Build', 'Destroy'],
             description: 'The action to take'
         )
-        choice(
-            name: 'Colour',
-            choices: ['Blue', 'Green'],
-            description: 'The environment to use'
+//        choice(
+//            name: 'Colour',
+//            choices: ['Blue', 'Green'],
+//            description: 'The environment to use'
         )
     }
 
