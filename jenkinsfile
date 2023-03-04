@@ -65,7 +65,7 @@ def terraformInit() {
     sh("""
 
         terraform init -backend-config="bucket=${env.BACKEND_BUCKET}" -backend-config="key=terraform.tfstate"
-        terraform workspace select ${params.Colour.toLowerCase()} || terraform workspace new ${params.Colour.toLowerCase()}
+//        terraform workspace select ${params.Colour.toLowerCase()} || terraform workspace new ${params.Colour.toLowerCase()}
     """)
 }
 
