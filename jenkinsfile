@@ -28,7 +28,7 @@ pipeline {
     }
 
     stages {
-        stage('Plan') {
+        stage('Init') {
             steps {
                 script {
                     currentBuild.displayName = params.version
