@@ -76,7 +76,7 @@ def terraformPlan() {
     }
 
     sh("""
-        terraform plan ${env.DESTROY} -var-file=${params.Environment.toLowerCase()}.tfvars -no-color -out=tfout
+        terraform plan ${env.DESTROY} -var-file=variables.tf-no-color -out=tfout
     """)
 }
 
